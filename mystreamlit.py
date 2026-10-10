@@ -1,5 +1,6 @@
 
 import streamlit as st
+import numpy as np
 import pandas as pd
 import pickle
 
@@ -62,6 +63,10 @@ if st.button('Generar Predicción', use_container_width=True):
         'age', 'balance', 'day', 'duration', 'campaign', 'pdays', 'previous',
         'education', 'job', 'marital', 'default', 'housing', 'loan', 'contact', 'month', 'poutcome'
     ])
+
+    input_data['pdays'] = pd.cut(input_data['pdays'],
+                                 bins=[-2, -1, 30, 105, 180, 210, np.inf],
+                                 labels=[0, 5, 4, 3, 2, 1]).astype(int)
     
     # Realizamos la predicción usando el pipeline completo
     prediccion = modelo.predict(input_data)[0]
